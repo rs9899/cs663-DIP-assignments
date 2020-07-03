@@ -1,0 +1,40 @@
+function outImg = myNotchFilt()
+
+file = load('../data/image_low_frequency_noise.mat');
+I = file.Z;
+II = zeros(2*size(I));
+II(129:384,129:384) = I;
+
+% figure('Name','Orig Img');
+% imshow(II);
+
+fim2 = fftshift(fft2(II));
+absfim2 = log(abs(fim2)+1);
+figure('Name','Freq Domain');
+imshow(absfim2,[-1,18]);
+
+outImg = absfim2;
+
+H = ones(size(II));
+cx=256;
+cy=256;
+f1x=278;
+f1y=268;
+f2x=237;
+f2y=248;
+
+a=meshgrid(1:512,1);
+d1x=a(:)-f1x;
+d1y=a(:)-f1y;
+d2x=a(:)-f2x;
+d2y=a(:)-f2y;
+d1x = d1x .* d1x;
+d1y = d1y .* d1y;
+d2x = d2x .* d2x;
+d2y = d2y .* d2y;
+
+for i=1:512
+    for j=1:512
+        if (d1x + d1y < R2) 
+
+end

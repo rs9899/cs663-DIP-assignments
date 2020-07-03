@@ -1,0 +1,376 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-04"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Parameters</a></li><li><a href="#3">image_read</a></li><li><a href="#4">Part A</a></li><li><a href="#5">Part B</a></li><li><a href="#6">Part C</a></li><li><a href="#7">Part D</a></li><li><a href="#8">d_repeat</a></li><li><a href="#9">Observation</a></li><li><a href="#10">Part E</a></li><li><a href="#11">Image_Stream</a></li><li><a href="#12">Part A</a></li><li><a href="#13">Part B</a></li><li><a href="#14">Part C</a></li><li><a href="#15">Part D</a></li><li><a href="#16">d_repeat</a></li></ul></div><pre class="codeinput">close <span class="string">all</span>;
+clear;
+<span class="comment">% clc;</span>
+</pre><h2 id="2">Parameters</h2><pre class="codeinput">sigma = 20;
+
+rng(10);
+</pre><h2 id="3">image_read</h2><p>img = double(imread('../data/barbara256.png'));</p><pre class="codeinput">img = double(imread(<span class="string">'../data/barbara256-part.png'</span>));
+im_noisy = img + randn(size(img))*sigma;
+figure(<span class="string">'Name'</span> , <span class="string">'Noiseless'</span>),imshow(img,[]),title(<span class="string">'Noiseless'</span>);
+figure(<span class="string">'Name'</span> , <span class="string">'Noisy'</span>),imshow(im_noisy,[]),title(<span class="string">'Noisy'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2 id="4">Part A</h2><pre class="codeinput">tic;
+im2 =  myPCADenoising1(im_noisy);
+toc;
+disp(<span class="string">"RMSE of denoised image -- part a"</span>)
+disp(myRMSE(im2 , img))
+
+figure,imshow(im2,[]),title(<span class="string">'Denoised Method 1'</span>);
+</pre><pre class="codeoutput">Elapsed time is 0.050849 seconds.
+RMSE of denoised image -- part a
+    0.0042
+
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <h2 id="5">Part B</h2><pre class="codeinput">tic;
+im3 =  myPCADenoising2(im_noisy);
+toc;
+disp(<span class="string">"RMSE of denoised image -- part b"</span>)
+disp(myRMSE(im3 , img))
+figure,imshow(im3,[]),title(<span class="string">'Denoised Method 2'</span>);
+</pre><pre class="codeoutput">Elapsed time is 86.320614 seconds.
+RMSE of denoised image -- part b
+    0.0027
+
+</pre><img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2 id="6">Part C</h2><pre class="codeinput">space_sig = 2;
+intensity_sig = 20;
+tic;
+[im_bil , ~] = myBilateralFiltering(im_noisy , space_sig , intensity_sig);
+toc;
+disp(<span class="string">"RMSE of denoised image -- part c"</span>)
+disp(myRMSE(im_bil , img))
+
+figure,imshow(im_bil,[]),title(<span class="string">'Denoised Method Bilinear'</span>);
+</pre><pre class="codeoutput">Elapsed time is 0.567299 seconds.
+RMSE of denoised image -- part c
+    0.0095
+
+</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <h2 id="7">Part D</h2><pre class="codeinput">im1 = poissrnd(img);
+j = sqrt(im1 + 3/8);
+tic;
+j_denois =  myPCADenoising2(j);
+toc;
+img_d = j_denois .* j_denois;
+img_d = img_d - 3/8;
+
+disp(<span class="string">"RMSE of denoised image -- part d"</span>)
+disp(myRMSE(img_d , img))
+
+figure,imshow(im1,[]),title(<span class="string">'Poisson Noissy'</span>);
+figure,imshow(img_d,[]),title(<span class="string">'Poisson Denoised'</span>);
+</pre><pre class="codeoutput">Elapsed time is 70.504973 seconds.
+RMSE of denoised image -- part d
+    0.0183
+
+</pre><img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <h2 id="8">d_repeat</h2><pre class="codeinput">im1 = poissrnd(img/20);
+j = sqrt(im1 + 3/8);
+tic;
+j_denois =  myPCADenoising2(j);
+toc;
+img_d = j_denois .* j_denois;
+img_d = img_d - 3/8;
+img_d = img_d * 20;
+disp(<span class="string">"RMSE of denoised image -- part d"</span>)
+disp(myRMSE(img_d , img))
+
+figure,imshow(im1,[]),title(<span class="string">'Poisson Noissy Low intensity'</span>);
+figure,imshow(img_d,[]),title(<span class="string">'Poisson Denoised Low intensity'</span>);
+</pre><pre class="codeoutput">Elapsed time is 47.334226 seconds.
+RMSE of denoised image -- part d
+    1.0738
+
+</pre><img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <h2 id="9">Observation</h2><p>In this case the image is very poorly denoised with high amount of blacks in the image due to the problem of low intensity making denoising difficult.</p><h2 id="10">Part E</h2><p>No this will become an issue. If we clamp the value, the underlying noise distribution will be no more POisson distribution. Hence the approximation of poisson with modified normal distribution won't work. This will lead to bad denoising.</p><h2 id="11">Image_Stream</h2><pre class="codeinput">img_stream = imread(<span class="string">'../data/stream.png'</span>);
+img = imcrop(img_stream,[1 128+256 127 127]);
+img = double(img);
+im_noisy = img + randn(size(img))*sigma;
+figure(<span class="string">'Name'</span> , <span class="string">'Noiseless'</span>),imshow(img,[]),title(<span class="string">'Noiseless'</span>);
+figure(<span class="string">'Name'</span> , <span class="string">'Noisy'</span>),imshow(im_noisy,[]),title(<span class="string">'Noisy'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <h2 id="12">Part A</h2><pre class="codeinput">tic;
+im2 =  myPCADenoising1(im_noisy);
+toc;
+disp(<span class="string">"RMSE of denoised image -- part a"</span>)
+disp(myRMSE(im2 , img))
+
+figure,imshow(im2,[]),title(<span class="string">'Denoised Method 1'</span>);
+</pre><pre class="codeoutput">Elapsed time is 0.033977 seconds.
+RMSE of denoised image -- part a
+    0.0025
+
+</pre><img vspace="5" hspace="5" src="myMainScript_12.png" alt=""> <h2 id="13">Part B</h2><pre class="codeinput">tic;
+im3 =  myPCADenoising2(im_noisy);
+toc;
+disp(<span class="string">"RMSE of denoised image -- part b"</span>)
+disp(myRMSE(im3 , img))
+figure,imshow(im3,[]),title(<span class="string">'Denoised Method 2'</span>);
+</pre><pre class="codeoutput">Elapsed time is 62.578598 seconds.
+RMSE of denoised image -- part b
+    0.0025
+
+</pre><img vspace="5" hspace="5" src="myMainScript_13.png" alt=""> <h2 id="14">Part C</h2><pre class="codeinput">space_sig = 2;
+intensity_sig = 20;
+tic;
+[im_bil , ~] = myBilateralFiltering(im_noisy , space_sig , intensity_sig);
+toc;
+disp(<span class="string">"RMSE of denoised image -- part c"</span>)
+disp(myRMSE(im_bil , img))
+
+figure,imshow(im_bil,[]),title(<span class="string">'Denoised Method Bilinear'</span>);
+</pre><pre class="codeoutput">Elapsed time is 0.540832 seconds.
+RMSE of denoised image -- part c
+    0.0074
+
+</pre><img vspace="5" hspace="5" src="myMainScript_14.png" alt=""> <h2 id="15">Part D</h2><pre class="codeinput">im1 = poissrnd(img);
+j = sqrt(im1 + 3/8);
+tic;
+j_denois =  myPCADenoising2(j);
+toc;
+img_d = j_denois .* j_denois;
+img_d = img_d - 3/8;
+
+disp(<span class="string">"RMSE of denoised image -- part d"</span>)
+disp(myRMSE(img_d , img))
+
+figure,imshow(im1,[]),title(<span class="string">'Poisson Noissy'</span>);
+figure,imshow(img_d,[]),title(<span class="string">'Poisson Denoised'</span>);
+</pre><pre class="codeoutput">Elapsed time is 68.066568 seconds.
+RMSE of denoised image -- part d
+    0.0147
+
+</pre><img vspace="5" hspace="5" src="myMainScript_15.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_16.png" alt=""> <h2 id="16">d_repeat</h2><pre class="codeinput">im1 = poissrnd(img/20);
+j = sqrt(im1 + 3/8);
+tic;
+j_denois =  myPCADenoising2(j);
+toc;
+img_d = j_denois .* j_denois;
+img_d = img_d - 3/8;
+img_d = img_d * 20;
+disp(<span class="string">"RMSE of denoised image -- part d"</span>)
+disp(myRMSE(img_d , img))
+
+figure,imshow(im1,[]),title(<span class="string">'Poisson Noissy Low intensity'</span>);
+figure,imshow(img_d,[]),title(<span class="string">'Poisson Denoised Low intensity'</span>);
+</pre><pre class="codeoutput">Elapsed time is 44.003509 seconds.
+RMSE of denoised image -- part d
+    1.0844
+
+</pre><img vspace="5" hspace="5" src="myMainScript_17.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_18.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+close all;
+clear;
+% clc;
+
+%% Parameters
+
+sigma = 20;
+
+rng(10);
+%% image_read
+% img = double(imread('../data/barbara256.png'));
+img = double(imread('../data/barbara256-part.png'));
+im_noisy = img + randn(size(img))*sigma;
+figure('Name' , 'Noiseless'),imshow(img,[]),title('Noiseless');
+figure('Name' , 'Noisy'),imshow(im_noisy,[]),title('Noisy');
+%% Part A
+tic;
+im2 =  myPCADenoising1(im_noisy);
+toc;
+disp("RMSE of denoised image REPLACE_WITH_DASH_DASH part a")
+disp(myRMSE(im2 , img))
+
+figure,imshow(im2,[]),title('Denoised Method 1');
+
+%% Part B
+tic;
+im3 =  myPCADenoising2(im_noisy);
+toc;
+disp("RMSE of denoised image REPLACE_WITH_DASH_DASH part b")
+disp(myRMSE(im3 , img))
+figure,imshow(im3,[]),title('Denoised Method 2');
+
+%% Part C
+space_sig = 2;
+intensity_sig = 20;
+tic;
+[im_bil , ~] = myBilateralFiltering(im_noisy , space_sig , intensity_sig);
+toc;
+disp("RMSE of denoised image REPLACE_WITH_DASH_DASH part c")
+disp(myRMSE(im_bil , img))
+
+figure,imshow(im_bil,[]),title('Denoised Method Bilinear');
+%% Part D
+im1 = poissrnd(img);
+j = sqrt(im1 + 3/8);
+tic;
+j_denois =  myPCADenoising2(j);
+toc;
+img_d = j_denois .* j_denois;
+img_d = img_d - 3/8;
+
+disp("RMSE of denoised image REPLACE_WITH_DASH_DASH part d")
+disp(myRMSE(img_d , img))
+
+figure,imshow(im1,[]),title('Poisson Noissy');
+figure,imshow(img_d,[]),title('Poisson Denoised');
+
+
+%% d_repeat
+
+im1 = poissrnd(img/20);
+j = sqrt(im1 + 3/8);
+tic;
+j_denois =  myPCADenoising2(j);
+toc;
+img_d = j_denois .* j_denois;
+img_d = img_d - 3/8;
+img_d = img_d * 20;
+disp("RMSE of denoised image REPLACE_WITH_DASH_DASH part d")
+disp(myRMSE(img_d , img))
+
+figure,imshow(im1,[]),title('Poisson Noissy Low intensity');
+figure,imshow(img_d,[]),title('Poisson Denoised Low intensity');
+%% Observation
+% In this case the image is very poorly denoised with high amount of blacks
+% in the image due to the problem of low intensity making denoising
+% difficult.
+
+%% Part E
+% No this will become an issue. If we clamp the value, the underlying noise
+% distribution will be no more POisson distribution. Hence the
+% approximation of poisson with modified normal distribution won't work.
+% This will lead to bad denoising.
+
+
+%% Image_Stream
+img_stream = imread('../data/stream.png');
+img = imcrop(img_stream,[1 128+256 127 127]);
+img = double(img);
+im_noisy = img + randn(size(img))*sigma;
+figure('Name' , 'Noiseless'),imshow(img,[]),title('Noiseless');
+figure('Name' , 'Noisy'),imshow(im_noisy,[]),title('Noisy');
+%% Part A
+tic;
+im2 =  myPCADenoising1(im_noisy);
+toc;
+disp("RMSE of denoised image REPLACE_WITH_DASH_DASH part a")
+disp(myRMSE(im2 , img))
+
+figure,imshow(im2,[]),title('Denoised Method 1');
+
+%% Part B
+tic;
+im3 =  myPCADenoising2(im_noisy);
+toc;
+disp("RMSE of denoised image REPLACE_WITH_DASH_DASH part b")
+disp(myRMSE(im3 , img))
+figure,imshow(im3,[]),title('Denoised Method 2');
+
+%% Part C
+space_sig = 2;
+intensity_sig = 20;
+tic;
+[im_bil , ~] = myBilateralFiltering(im_noisy , space_sig , intensity_sig);
+toc;
+disp("RMSE of denoised image REPLACE_WITH_DASH_DASH part c")
+disp(myRMSE(im_bil , img))
+
+figure,imshow(im_bil,[]),title('Denoised Method Bilinear');
+%% Part D
+im1 = poissrnd(img);
+j = sqrt(im1 + 3/8);
+tic;
+j_denois =  myPCADenoising2(j);
+toc;
+img_d = j_denois .* j_denois;
+img_d = img_d - 3/8;
+
+disp("RMSE of denoised image REPLACE_WITH_DASH_DASH part d")
+disp(myRMSE(img_d , img))
+
+figure,imshow(im1,[]),title('Poisson Noissy');
+figure,imshow(img_d,[]),title('Poisson Denoised');
+
+
+%% d_repeat
+
+im1 = poissrnd(img/20);
+j = sqrt(im1 + 3/8);
+tic;
+j_denois =  myPCADenoising2(j);
+toc;
+img_d = j_denois .* j_denois;
+img_d = img_d - 3/8;
+img_d = img_d * 20;
+disp("RMSE of denoised image REPLACE_WITH_DASH_DASH part d")
+disp(myRMSE(img_d , img))
+
+figure,imshow(im1,[]),title('Poisson Noissy Low intensity');
+figure,imshow(img_d,[]),title('Poisson Denoised Low intensity');
+
+
+##### SOURCE END #####
+--></body></html>
