@@ -1,0 +1,447 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-02"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">MyMainScript</a></li><li><a href="#2">Your code here</a></li><li><a href="#3">BARBARA IMAGE</a></li><li><a href="#4">Grass</a></li><li><a href="#5">honey</a></li></ul></div><h2 id="1">MyMainScript</h2><pre class="codeinput">clear;
+clc;
+tic;
+</pre><h2 id="2">Your code here</h2><pre class="codeinput">rand(<span class="string">'seed'</span>,42);
+</pre><h2 id="3">BARBARA IMAGE</h2><pre class="codeinput">bar = load(<span class="string">"../data/barbara.mat"</span>);
+orig = bar.imageOrig;
+nois = NoiseAdder(orig);
+
+<span class="comment">% Parameters</span>
+space_sig = 1.4;
+intensity_sig = 10;
+
+
+<span class="comment">% apply Filter</span>
+
+[out , filtr] = myBilateralFiltering(nois , space_sig , intensity_sig);
+
+colormap = [min(orig(:)) max(orig(:))];
+figure;
+subplot(1,2,1), imshow(orig,colormap) , title(<span class="string">"Original"</span>)
+subplot(1,2,2), imshow(nois,colormap) , title(<span class="string">"Noisy"</span>)
+
+figure;
+subplot(1,2,1), imshow(out ,colormap) , title(<span class="string">"Filtered"</span>)
+subplot(1,2,2), imshow(filtr , []),  title(<span class="string">"Filter"</span>);
+
+
+opterror = myRMSD(orig,out);
+disp(<span class="string">"Optimal Parameters"</span>)
+disp(<span class="string">"Spatial Sigma"</span>)
+disp(space_sig)
+disp(<span class="string">"Intensity Sigma"</span>)
+disp(intensity_sig)
+disp(<span class="string">"Best Error"</span>);
+disp(opterror);
+
+opterror_a = myRMSD(orig,myBilateralFiltering(nois , 0.9*space_sig , 1.0*intensity_sig));
+disp(<span class="string">"0.9 * space , 1 * intensity"</span>)
+disp(opterror_a);
+
+opterror_b = myRMSD(orig,myBilateralFiltering(nois , 1.1*space_sig , 1.0*intensity_sig));
+disp(<span class="string">"1.1 * space , 1 * intensity"</span>)
+disp(opterror_b);
+
+opterror_c = myRMSD(orig,myBilateralFiltering(nois , space_sig , 0.9*intensity_sig));
+disp(<span class="string">"1 * space , 0.9 * intensity"</span>)
+disp(opterror_c);
+
+opterror_d = myRMSD(orig,myBilateralFiltering(nois , space_sig , 1.1*intensity_sig));
+disp(<span class="string">"1 * space , 1.1 * intensity"</span>)
+disp(opterror_d);
+<span class="comment">%</span>
+</pre><pre class="codeoutput">Optimal Parameters
+Spatial Sigma
+    1.4000
+
+Intensity Sigma
+    10
+
+Best Error
+    3.2931
+
+0.9 * space , 1 * intensity
+    3.3001
+
+1.1 * space , 1 * intensity
+    3.2940
+
+1 * space , 0.9 * intensity
+    3.3179
+
+1 * space , 1.1 * intensity
+    3.3063
+
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2 id="4">Grass</h2><pre class="codeinput">L = load(<span class="string">"../data/grassNoisy.mat"</span>);
+orig = im2double(imread(<span class="string">"../data/grass.png"</span>));
+nois = L.imgCorrupt;
+
+<span class="comment">% Parameters</span>
+space_sig = 0.6;
+intensity_sig = 6;
+
+<span class="comment">% apply Filter</span>
+
+[out , filtr] = myBilateralFiltering(nois , space_sig , intensity_sig);
+
+colormap = [min(orig(:)) max(orig(:))];
+figure;
+subplot(1,2,1), imshow(orig,colormap) , title(<span class="string">"Original"</span>)
+subplot(1,2,2), imshow(nois,colormap) , title(<span class="string">"Noisy"</span>)
+
+figure;
+subplot(1,2,1), imshow(out ,colormap) , title(<span class="string">"Filtered"</span>)
+subplot(1,2,2), imshow(filtr , []),  title(<span class="string">"Filter"</span>);
+
+
+
+opterror = myRMSD(orig,out);
+disp(<span class="string">"Optimal Parameters"</span>)
+disp(<span class="string">"Spatial Sigma"</span>)
+disp(space_sig)
+disp(<span class="string">"Intensity Sigma"</span>)
+disp(intensity_sig)
+disp(<span class="string">"Best Error"</span>);
+disp(opterror);
+
+opterror_a = myRMSD(orig,myBilateralFiltering(nois , 0.9*space_sig , 1.0*intensity_sig));
+disp(<span class="string">"0.9 * space , 1 * intensity"</span>)
+disp(opterror_a);
+
+opterror_b = myRMSD(orig,myBilateralFiltering(nois , 1.1*space_sig , 1.0*intensity_sig));
+disp(<span class="string">"1.1 * space , 1 * intensity"</span>)
+disp(opterror_b);
+
+opterror_c = myRMSD(orig,myBilateralFiltering(nois , space_sig , 0.9*intensity_sig));
+disp(<span class="string">"1 * space , 0.9 * intensity"</span>)
+disp(opterror_c);
+
+opterror_d = myRMSD(orig,myBilateralFiltering(nois , space_sig , 1.1*intensity_sig));
+disp(<span class="string">"1 * space , 1.1 * intensity"</span>)
+disp(opterror_d);
+</pre><pre class="codeoutput">Optimal Parameters
+Spatial Sigma
+    0.6000
+
+Intensity Sigma
+     6
+
+Best Error
+    0.0763
+
+0.9 * space , 1 * intensity
+    0.0767
+
+1.1 * space , 1 * intensity
+    0.0766
+
+1 * space , 0.9 * intensity
+    0.0763
+
+1 * space , 1.1 * intensity
+    0.0763
+
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2 id="5">honey</h2><pre class="codeinput">L = load(<span class="string">"../data/honeyCombReal_Noisy.mat"</span>);
+orig = im2double(imread(<span class="string">"../data/honeyCombReal.png"</span>));
+nois = L.imgCorrupt;
+
+<span class="comment">% Parameters</span>
+space_sig = 0.6;
+intensity_sig = 6;
+
+<span class="comment">% apply Filter</span>
+
+[out , filtr] = myBilateralFiltering(nois , space_sig , intensity_sig);
+
+colormap = [min(orig(:)) max(orig(:))];
+figure;
+subplot(1,2,1), imshow(orig,colormap) , title(<span class="string">"Original"</span>)
+subplot(1,2,2), imshow(nois,colormap) , title(<span class="string">"Noisy"</span>)
+
+figure;
+subplot(1,2,1), imshow(out ,colormap) , title(<span class="string">"Filtered"</span>)
+subplot(1,2,2), imshow(filtr , []),  title(<span class="string">"Filter"</span>);
+
+
+
+opterror = myRMSD(orig,out);
+disp(<span class="string">"Optimal Parameters"</span>)
+disp(<span class="string">"Spatial Sigma"</span>)
+disp(space_sig)
+disp(<span class="string">"Intensity Sigma"</span>)
+disp(intensity_sig)
+disp(<span class="string">"Best Error"</span>);
+disp(opterror);
+
+opterror_a = myRMSD(orig,myBilateralFiltering(nois , 0.9*space_sig , 1.0*intensity_sig));
+disp(<span class="string">"0.9 * space , 1 * intensity"</span>)
+disp(opterror_a);
+
+opterror_b = myRMSD(orig,myBilateralFiltering(nois , 1.1*space_sig , 1.0*intensity_sig));
+disp(<span class="string">"1.1 * space , 1 * intensity"</span>)
+disp(opterror_b);
+
+opterror_c = myRMSD(orig,myBilateralFiltering(nois , space_sig , 0.9*intensity_sig));
+disp(<span class="string">"1 * space , 0.9 * intensity"</span>)
+disp(opterror_c);
+
+opterror_d = myRMSD(orig,myBilateralFiltering(nois , space_sig , 1.1*intensity_sig));
+disp(<span class="string">"1 * space , 1.1 * intensity"</span>)
+disp(opterror_d);
+
+
+toc;
+</pre><pre class="codeoutput">Optimal Parameters
+Spatial Sigma
+    0.6000
+
+Intensity Sigma
+     6
+
+Best Error
+    0.0705
+
+0.9 * space , 1 * intensity
+    0.0707
+
+1.1 * space , 1 * intensity
+    0.0709
+
+1 * space , 0.9 * intensity
+    0.0705
+
+1 * space , 1.1 * intensity
+    0.0705
+
+Elapsed time is 55.562238 seconds.
+</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% MyMainScript
+clear;
+clc;
+tic;
+%% Your code here
+rand('seed',42);
+
+%% BARBARA IMAGE
+bar = load("../data/barbara.mat");
+orig = bar.imageOrig;
+nois = NoiseAdder(orig);
+
+% Parameters
+space_sig = 1.4;
+intensity_sig = 10;
+
+
+% apply Filter
+
+[out , filtr] = myBilateralFiltering(nois , space_sig , intensity_sig);
+
+colormap = [min(orig(:)) max(orig(:))];
+figure;
+subplot(1,2,1), imshow(orig,colormap) , title("Original")
+subplot(1,2,2), imshow(nois,colormap) , title("Noisy")
+
+figure;
+subplot(1,2,1), imshow(out ,colormap) , title("Filtered")
+subplot(1,2,2), imshow(filtr , []),  title("Filter");
+
+
+opterror = myRMSD(orig,out);
+disp("Optimal Parameters")
+disp("Spatial Sigma")
+disp(space_sig)
+disp("Intensity Sigma")
+disp(intensity_sig)
+disp("Best Error");
+disp(opterror);
+
+opterror_a = myRMSD(orig,myBilateralFiltering(nois , 0.9*space_sig , 1.0*intensity_sig));
+disp("0.9 * space , 1 * intensity")
+disp(opterror_a);
+
+opterror_b = myRMSD(orig,myBilateralFiltering(nois , 1.1*space_sig , 1.0*intensity_sig));
+disp("1.1 * space , 1 * intensity")
+disp(opterror_b);
+
+opterror_c = myRMSD(orig,myBilateralFiltering(nois , space_sig , 0.9*intensity_sig));
+disp("1 * space , 0.9 * intensity")
+disp(opterror_c);
+
+opterror_d = myRMSD(orig,myBilateralFiltering(nois , space_sig , 1.1*intensity_sig));
+disp("1 * space , 1.1 * intensity")
+disp(opterror_d);
+% 
+%% Grass
+
+L = load("../data/grassNoisy.mat");
+orig = im2double(imread("../data/grass.png"));
+nois = L.imgCorrupt;
+
+% Parameters
+space_sig = 0.6;
+intensity_sig = 6;
+
+% apply Filter
+
+[out , filtr] = myBilateralFiltering(nois , space_sig , intensity_sig);
+
+colormap = [min(orig(:)) max(orig(:))];
+figure;
+subplot(1,2,1), imshow(orig,colormap) , title("Original")
+subplot(1,2,2), imshow(nois,colormap) , title("Noisy")
+
+figure;
+subplot(1,2,1), imshow(out ,colormap) , title("Filtered")
+subplot(1,2,2), imshow(filtr , []),  title("Filter");
+
+
+
+opterror = myRMSD(orig,out);
+disp("Optimal Parameters")
+disp("Spatial Sigma")
+disp(space_sig)
+disp("Intensity Sigma")
+disp(intensity_sig)
+disp("Best Error");
+disp(opterror);
+
+opterror_a = myRMSD(orig,myBilateralFiltering(nois , 0.9*space_sig , 1.0*intensity_sig));
+disp("0.9 * space , 1 * intensity")
+disp(opterror_a);
+
+opterror_b = myRMSD(orig,myBilateralFiltering(nois , 1.1*space_sig , 1.0*intensity_sig));
+disp("1.1 * space , 1 * intensity")
+disp(opterror_b);
+
+opterror_c = myRMSD(orig,myBilateralFiltering(nois , space_sig , 0.9*intensity_sig));
+disp("1 * space , 0.9 * intensity")
+disp(opterror_c);
+
+opterror_d = myRMSD(orig,myBilateralFiltering(nois , space_sig , 1.1*intensity_sig));
+disp("1 * space , 1.1 * intensity")
+disp(opterror_d);
+
+%% honey
+
+L = load("../data/honeyCombReal_Noisy.mat");
+orig = im2double(imread("../data/honeyCombReal.png"));
+nois = L.imgCorrupt;
+
+% Parameters
+space_sig = 0.6;
+intensity_sig = 6;
+
+% apply Filter
+
+[out , filtr] = myBilateralFiltering(nois , space_sig , intensity_sig);
+
+colormap = [min(orig(:)) max(orig(:))];
+figure;
+subplot(1,2,1), imshow(orig,colormap) , title("Original")
+subplot(1,2,2), imshow(nois,colormap) , title("Noisy")
+
+figure;
+subplot(1,2,1), imshow(out ,colormap) , title("Filtered")
+subplot(1,2,2), imshow(filtr , []),  title("Filter");
+
+
+
+opterror = myRMSD(orig,out);
+disp("Optimal Parameters")
+disp("Spatial Sigma")
+disp(space_sig)
+disp("Intensity Sigma")
+disp(intensity_sig)
+disp("Best Error");
+disp(opterror);
+
+opterror_a = myRMSD(orig,myBilateralFiltering(nois , 0.9*space_sig , 1.0*intensity_sig));
+disp("0.9 * space , 1 * intensity")
+disp(opterror_a);
+
+opterror_b = myRMSD(orig,myBilateralFiltering(nois , 1.1*space_sig , 1.0*intensity_sig));
+disp("1.1 * space , 1 * intensity")
+disp(opterror_b);
+
+opterror_c = myRMSD(orig,myBilateralFiltering(nois , space_sig , 0.9*intensity_sig));
+disp("1 * space , 0.9 * intensity")
+disp(opterror_c);
+
+opterror_d = myRMSD(orig,myBilateralFiltering(nois , space_sig , 1.1*intensity_sig));
+disp("1 * space , 1.1 * intensity")
+disp(opterror_d);
+
+
+toc;
+
+##### SOURCE END #####
+--></body></html>
