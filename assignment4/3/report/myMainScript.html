@@ -1,0 +1,250 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-10-17"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">MyMainScript</a></li><li><a href="#2">Read Data</a></li><li><a href="#3">SVD</a></li><li><a href="#4">Parameters</a></li><li><a href="#5">falseNegative</a></li><li><a href="#6">falsePositive</a></li><li><a href="#7">METHOD Explained</a></li><li><a href="#8">End</a></li></ul></div><h2 id="1">MyMainScript</h2><pre class="codeinput">tic;
+</pre><h2 id="2">Read Data</h2><pre class="codeinput">clear;
+P = <span class="string">'../../1/att_faces/s'</span>;
+count=1;
+count2=1;
+<span class="comment">% face_tag = strings(240,1);</span>
+<span class="comment">% original_face_tag = strings(40,1);</span>
+<span class="comment">% result = strings(40,1);</span>
+train_mat = zeros([112*92 , 192]);
+test_mat = zeros([112*92 , 128]);
+test_mat2 = zeros([112*92 , 80]);
+<span class="keyword">for</span> i=1:32
+    temp_D = strcat(P,int2str(i));
+    D = dir(fullfile(temp_D,<span class="string">'*.pgm'</span>));
+    <span class="keyword">for</span> j=1:6
+        F = fullfile(temp_D,D(j).name);
+        I = imread(F);
+        I = im2double(I);
+        train_mat(:,count) = I(:);
+<span class="comment">%         face_tag(count) = strcat('s',int2str(i));</span>
+        count=count+1;
+    <span class="keyword">end</span>
+    <span class="keyword">for</span> j=7:10
+        F = fullfile(temp_D,D(j).name);
+        I = imread(F);
+        I = im2double(I);
+        test_mat(:,count2) = I(:);
+<span class="comment">%         original_face_tag(count2) = strcat('s',int2str(i));</span>
+        count2=count2+1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+count2 = 1;
+<span class="keyword">for</span> i=33:40
+    temp_D = strcat(P,int2str(i));
+    D = dir(fullfile(temp_D,<span class="string">'*.pgm'</span>));
+    <span class="keyword">for</span> j=1:10
+        F = fullfile(temp_D,D(j).name);
+        I = imread(F);
+<span class="comment">%         I = rgb2gray(I);</span>
+        I = im2double(I);
+        test_mat2(:,count2) = I(:);
+<span class="comment">%         original_face_tag(count2) = strcat('s',int2str(i));</span>
+        count2=count2+1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2 id="3">SVD</h2><pre class="codeinput">[M,U, ~] = svd_faceRec(train_mat);
+
+train_mat = U' * (train_mat - M);
+test_mat = U' * (test_mat - M);
+test_mat2 = U' * (test_mat2 - M);
+</pre><h2 id="4">Parameters</h2><pre class="codeinput">threshold = 125;
+</pre><h2 id="5">falseNegative</h2><pre class="codeinput">falseNegative = 0;
+numTest = size(test_mat , 2);
+<span class="keyword">for</span> i=1:numTest
+    dist = train_mat - test_mat(:,i);
+    dist = sum(dist.^2 , 1);
+    d = min(dist);
+    <span class="keyword">if</span> d &gt; threshold
+        falseNegative = falseNegative + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+disp(strcat(int2str(falseNegative) , <span class="string">' falseNegatives out of  ,'</span>, int2str(numTest),<span class="string">' images'</span> ))
+</pre><pre class="codeoutput">29 falseNegatives out of  ,128 images
+</pre><h2 id="6">falsePositive</h2><pre class="codeinput">falsePositive = 0;
+numTest = size(test_mat2 , 2);
+<span class="keyword">for</span> i=1:numTest
+    dist = train_mat - test_mat2(:,i);
+    dist = sum(dist.^2 , 1);
+    d = min(dist);
+    <span class="keyword">if</span> d &lt; threshold
+        falsePositive = falsePositive + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+
+disp(strcat(int2str(falsePositive) , <span class="string">' falsePositives out of  ,'</span>, int2str(numTest),<span class="string">' images'</span> ))
+</pre><pre class="codeoutput">23 falsePositives out of  ,80 images
+</pre><h2 id="7">METHOD Explained</h2><p>In the SVD space, we take representation of images. And to check if it is outlier, we take the nearest insample point and if the distance between that and the sample is greater than a specifed value, we classify it as not matching identity.</p><h2 id="8">End</h2><pre class="codeinput">toc;
+</pre><pre class="codeoutput">Elapsed time is 1.926542 seconds.
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% MyMainScript
+
+tic;
+%% Read Data
+clear;
+P = '../../1/att_faces/s';
+count=1;
+count2=1;
+% face_tag = strings(240,1);
+% original_face_tag = strings(40,1);
+% result = strings(40,1);
+train_mat = zeros([112*92 , 192]);
+test_mat = zeros([112*92 , 128]);
+test_mat2 = zeros([112*92 , 80]);
+for i=1:32
+    temp_D = strcat(P,int2str(i));
+    D = dir(fullfile(temp_D,'*.pgm'));
+    for j=1:6
+        F = fullfile(temp_D,D(j).name);
+        I = imread(F);
+        I = im2double(I);
+        train_mat(:,count) = I(:);
+%         face_tag(count) = strcat('s',int2str(i));
+        count=count+1;
+    end
+    for j=7:10
+        F = fullfile(temp_D,D(j).name);
+        I = imread(F);
+        I = im2double(I);
+        test_mat(:,count2) = I(:);
+%         original_face_tag(count2) = strcat('s',int2str(i));
+        count2=count2+1;
+    end
+end
+count2 = 1;
+for i=33:40
+    temp_D = strcat(P,int2str(i));
+    D = dir(fullfile(temp_D,'*.pgm'));
+    for j=1:10
+        F = fullfile(temp_D,D(j).name);
+        I = imread(F);
+%         I = rgb2gray(I);
+        I = im2double(I);
+        test_mat2(:,count2) = I(:);
+%         original_face_tag(count2) = strcat('s',int2str(i));
+        count2=count2+1;
+    end
+end
+
+%% SVD
+[M,U, ~] = svd_faceRec(train_mat);
+
+train_mat = U' * (train_mat - M);
+test_mat = U' * (test_mat - M);
+test_mat2 = U' * (test_mat2 - M);
+
+%% Parameters
+threshold = 125;
+
+%%  falseNegative
+falseNegative = 0;
+numTest = size(test_mat , 2);
+for i=1:numTest
+    dist = train_mat - test_mat(:,i);
+    dist = sum(dist.^2 , 1);
+    d = min(dist);
+    if d > threshold
+        falseNegative = falseNegative + 1;
+    end
+end
+
+disp(strcat(int2str(falseNegative) , ' falseNegatives out of  ,', int2str(numTest),' images' ))
+%% falsePositive
+
+falsePositive = 0;
+numTest = size(test_mat2 , 2);
+for i=1:numTest
+    dist = train_mat - test_mat2(:,i);
+    dist = sum(dist.^2 , 1);
+    d = min(dist);
+    if d < threshold
+        falsePositive = falsePositive + 1;
+    end
+end
+
+
+disp(strcat(int2str(falsePositive) , ' falsePositives out of  ,', int2str(numTest),' images' ))
+    
+
+%% METHOD Explained
+% In the SVD space, we take representation of images and to check if it is
+% inlier or outlier, we take the nearest insample point and that the
+% distance in between in that space is less than a specifed value
+
+
+%% End
+toc;
+
+##### SOURCE END #####
+--></body></html>
